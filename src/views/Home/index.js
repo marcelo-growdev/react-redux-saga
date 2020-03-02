@@ -13,21 +13,14 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    const growdevers = localStorage.getItem('growdevers');
-    const { addToPerson } = this.props;
-
-    if (growdevers) {
-      const list = JSON.parse(growdevers);
-      this.setState({ growdevers: list });
-
-      list.map(item => addToPerson(item));
+    const { person } = this.props;
+    if (person.length > 0) {
+      this.setState({ growdevers: person });
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState !== this.state.growdevers) {
-      localStorage.setItem('growdevers', JSON.stringify(this.state.growdevers));
-    }
+    // Ao atualizar o state executar alguma coisa
   }
 
   handleInputChange = e => {
@@ -88,7 +81,11 @@ class Home extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  person: state.person,
+});
+
 const mapDispatchToProps = dispatch =>
   bindActionCreators(PersonActions, dispatch);
 
-export default connect(null, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
